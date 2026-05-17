@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-clone
+spec:
+  params:
+    - name: github-url
+      type: string
+  workspaces:
+    - name: shared-data
+  steps:
+    - name: git-clone
+      image: alpine/git
+      script: |
+        #!/bin/sh
+        rm -rf *
+        cd $(workspaces.shared-data.path)/Multimodule_Maven
+        git clone $(params.github-url)
+        ls -lrt

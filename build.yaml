@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-task
+spec:
+  workspaces:
+    - name: shared-data
+  steps:
+    - name: build-maven
+      image: maven:3.8.6-openjdk-11
+      workingDir: $(workspaces.shared-data.path)/Multimodule_Maven
+      script: |
+        #!/bin/bash
+        mvn clean package
+        find . -name "*.jar"
